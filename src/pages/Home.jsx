@@ -15,10 +15,11 @@ function Home(props) {
       setItems(json.data)
       setLoading(false)
     })
+    window.scrollTo(0, 0)
   }, []);
 
   return (
-    <>
+    <div className="container">
       <div className="content__top">
         <Categories/>
         <Sort/>
@@ -30,7 +31,7 @@ function Home(props) {
             : (items.map((item) => (<PizzaBlock key={item.id} {...item} />)))
         )}
       </div>
-    </>
+    </div>
   );
 }
 

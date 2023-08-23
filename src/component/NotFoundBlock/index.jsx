@@ -4,6 +4,7 @@ import styles from './NotFoundBlock.module.scss'
 
 function NotFoundBlock(props) {
   return (
+    <div className="container">
     <div className={styles.root}>
       <h1>
         <span>😕</span>
@@ -11,6 +12,7 @@ function NotFoundBlock(props) {
         Ничего не найдено
       </h1>
       <p className={styles.description}>К сожалению в нашем интернет-магазине отсутствует данная страница</p>
+    </div>
     </div>
   );
 }

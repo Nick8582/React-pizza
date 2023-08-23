@@ -163,6 +163,11 @@ body {
     }
   }
 
+  .content__items {
+    display: flex;
+    flex-direction: column;
+  }
+
   &__item {
     display: flex;
     width: 100%;

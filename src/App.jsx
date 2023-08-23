@@ -4,16 +4,18 @@ import Header from "./component/Header";
 import Categories from "./component/Categories";
 import Sort from "./component/Sort";
 import PizzaBlock from "./component/PizzaBlock";
+import Placeholder from "./component/PizzaBlock/Placeholder";
 
 function App() {
-
+  const [loading, setLoading] = useState(true)
   const [items, setItems] = useState([])
 
   useEffect(() => {
     fetch('https://rhgia6ncee.mockify.ru/api/items').then(res => {
-      res.json()
+      return res.json()
     }).then(json => {
       setItems(json.data)
+      setLoading(false)
     })
   }, []);
 
@@ -29,9 +31,10 @@ function App() {
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
-            {items.map((item) => (
-              <PizzaBlock key={item.id} {...item} />
-            ))}
+            {(loading
+                ? ([...new Array(10)].map((_, index) => <Placeholder key={index}/>))
+                : (items.map((item) => (<PizzaBlock key={item.id} {...item} />)))
+            )}
           </div>
         </div>
       </div>

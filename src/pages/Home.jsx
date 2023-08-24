@@ -4,7 +4,7 @@ import Sort from "../component/Sort";
 import Placeholder from "../component/PizzaBlock/Placeholder";
 import PizzaBlock from "../component/PizzaBlock";
 
-function Home(props) {
+function Home({searchValue}) {
   const [loading, setLoading] = useState(true)
   const [items, setItems] = useState([])
   const [categoryId, setCategoryId] = useState(0)
@@ -13,14 +13,17 @@ function Home(props) {
 
   useEffect(() => {
     setLoading(true)
-    fetch(`https://64e767c8b0fd9648b78fe8b4.mockapi.io/items?${categoryId > 0 ? `category=${categoryId}` : ''}&sortBy=${sortType.sortProperty}&order=${sortByTo ? 'desc' : 'asc'}`).then(res => {
+    fetch(`https://64e767c8b0fd9648b78fe8b4.mockapi.io/items?${categoryId > 0 ? `category=${categoryId}` : ''}&sortBy=${sortType.sortProperty}&order=${sortByTo ? 'desc' : 'asc'}${searchValue != '' ? `&search=${searchValue}` : ''}`).then(res => {
       return res.json()
     }).then(json => {
       setItems(json)
       setLoading(false)
     })
     window.scrollTo(0, 0)
-  }, [categoryId, sortType, sortByTo]);
+  }, [categoryId, sortType, sortByTo, searchValue]);
+
+  const pizzas = (items.map((item) => (<PizzaBlock key={item.id} {...item} />)))
+  const skeletons = ([...new Array(10)].map((_, index) => <Placeholder key={index}/>))
 
   return (
     <div className="container">
@@ -31,10 +34,7 @@ function Home(props) {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
-        {(loading
-            ? ([...new Array(10)].map((_, index) => <Placeholder key={index}/>))
-            : (items.map((item) => (<PizzaBlock key={item.id} {...item} />)))
-        )}
+        {(loading ? skeletons : pizzas)}
       </div>
     </div>
   );

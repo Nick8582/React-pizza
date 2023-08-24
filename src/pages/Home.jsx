@@ -7,22 +7,27 @@ import PizzaBlock from "../component/PizzaBlock";
 function Home(props) {
   const [loading, setLoading] = useState(true)
   const [items, setItems] = useState([])
+  const [categoryId, setCategoryId] = useState(0)
+  const [sortType, setSortType] = useState({name: 'популярности', sortProperty: 'rating'},)
+  const [sortByTo, setSortByTo] = useState(false)
 
   useEffect(() => {
-    fetch('https://rhgia6ncee.mockify.ru/api/items').then(res => {
+    setLoading(true)
+    fetch(`https://64e767c8b0fd9648b78fe8b4.mockapi.io/items?${categoryId > 0 ? `category=${categoryId}` : ''}&sortBy=${sortType.sortProperty}&order=${sortByTo ? 'desc' : 'asc'}`).then(res => {
       return res.json()
     }).then(json => {
-      setItems(json.data)
+      setItems(json)
       setLoading(false)
     })
     window.scrollTo(0, 0)
-  }, []);
+  }, [categoryId, sortType, sortByTo]);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories/>
-        <Sort/>
+        <Categories value={categoryId} onChangeCategory={(i) => setCategoryId(i)}/>
+        <Sort value={sortType} onchangeSort={(i) => setSortType(i)} sortByTo={sortByTo}
+              onChangeSortByTo={(i) => setSortByTo(i)}/>
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">

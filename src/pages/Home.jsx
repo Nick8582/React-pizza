@@ -1,17 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Categories from "../component/Categories";
 import Sort from "../component/Sort";
 import Placeholder from "../component/PizzaBlock/Placeholder";
 import PizzaBlock from "../component/PizzaBlock";
 import Pagination from "../component/Pagination";
+import {SearchContext} from "../App";
 
-function Home({searchValue}) {
+function Home() {
   const [loading, setLoading] = useState(true)
   const [items, setItems] = useState([])
   const [categoryId, setCategoryId] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
   const [sortType, setSortType] = useState({name: 'популярности', sortProperty: 'rating'},)
   const [sortByTo, setSortByTo] = useState(false)
+  const {searchValue} = useContext(SearchContext)
 
   useEffect(() => {
     setLoading(true)

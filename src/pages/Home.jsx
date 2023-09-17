@@ -9,8 +9,8 @@ import Placeholder from "../component/PizzaBlock/Placeholder";
 import PizzaBlock from "../component/PizzaBlock";
 import Pagination from "../component/Pagination";
 import {SearchContext} from "../App";
-import {setCurrentPage, setFilters} from "../redux/slices/filterSlice"
-import {fetchPizzas} from "../redux/slices/pizzaSlice";
+import {selectFilter, setCurrentPage, setFilters} from "../redux/slices/filterSlice"
+import {fetchPizzas, selectPizzaData} from "../redux/slices/pizzaSlice";
 
 function Home() {
   const navigate = useNavigate()
@@ -18,10 +18,8 @@ function Home() {
   const isSearch = useRef(false)
   const isMounted = useRef(false)
 
-  const {items, status} = useSelector(state => state.pizza)
-  const {categoryId, sort, sortByTo, currentPage} = useSelector(state => state.filter)
-
-  const {searchValue} = useContext(SearchContext)
+  const {items, status} = useSelector(selectPizzaData)
+  const {categoryId, sort, sortByTo, currentPage, searchValue} = useSelector(selectFilter)
 
   const onChangePage = (number) => {
     dispatch(setCurrentPage(number))

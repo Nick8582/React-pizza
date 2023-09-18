@@ -1,14 +1,13 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import qs from 'qs'
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom"
+import {useNavigate, Link} from "react-router-dom"
 
 import Categories from "../component/Categories";
 import Sort, {sortList} from "../component/Sort";
 import Placeholder from "../component/PizzaBlock/Placeholder";
 import PizzaBlock from "../component/PizzaBlock";
 import Pagination from "../component/Pagination";
-import {SearchContext} from "../App";
 import {selectFilter, setCurrentPage, setFilters} from "../redux/slices/filterSlice"
 import {fetchPizzas, selectPizzaData} from "../redux/slices/pizzaSlice";
 
@@ -71,7 +70,7 @@ function Home() {
   }, [categoryId, sort, sortByTo, searchValue, currentPage]);
 
 
-  const pizzas = (items.map((item) => (<PizzaBlock key={item.id} {...item} />)))
+  const pizzas = (items.map((item) => (<Link key={item.id} to={`/pizza/${item.id}`}><PizzaBlock {...item} /></Link>)))
   const skeletons = ([...new Array(10)].map((_, index) => <Placeholder key={index}/>))
 
   return (

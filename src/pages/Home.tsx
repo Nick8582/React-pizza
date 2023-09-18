@@ -1,17 +1,17 @@
 import React, {useEffect, useRef} from 'react';
 import qs from 'qs'
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate, Link} from "react-router-dom"
+import {useNavigate} from "react-router-dom"
 
 import Categories from "../component/Categories";
 import Sort, {sortList} from "../component/Sort";
 import Placeholder from "../component/PizzaBlock/Placeholder";
 import PizzaBlock from "../component/PizzaBlock";
 import Pagination from "../component/Pagination";
-import {selectFilter, setCurrentPage, setFilters} from "../redux/slices/filterSlice"
+import {selectFilter, setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice"
 import {fetchPizzas, selectPizzaData} from "../redux/slices/pizzaSlice";
 
-function Home() {
+const Home: React.FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const isSearch = useRef(false)
@@ -20,8 +20,12 @@ function Home() {
   const {items, status} = useSelector(selectPizzaData)
   const {categoryId, sort, sortByTo, currentPage, searchValue} = useSelector(selectFilter)
 
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number))
+  const onChangeCategory = (index: number) => {
+    dispatch(setCategoryId(index))
+  }
+
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page))
   }
 
   const getPizzas = async () => {
@@ -30,7 +34,7 @@ function Home() {
     const sortTypeURL = sort.sortProperty;
     const sortByToURL = sortByTo ? 'desc' : 'asc';
     const searchValueURL = searchValue !== '' ? `&search=${searchValue}` : '';
-
+    // @ts-ignore
     dispatch(fetchPizzas({categoryIdURL, sortTypeURL, sortByToURL, searchValueURL, currentPage}))
 
     window.scrollTo(0, 0)
@@ -70,13 +74,14 @@ function Home() {
   }, [categoryId, sort, sortByTo, searchValue, currentPage]);
 
 
-  const pizzas = (items.map((item) => (<Link key={item.id} to={`/pizza/${item.id}`}><PizzaBlock {...item} /></Link>)))
+
+  const pizzas = (items.map((item: any) => (<PizzaBlock {...item} key={item.id}/>)))
   const skeletons = ([...new Array(10)].map((_, index) => <Placeholder key={index}/>))
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories/>
+        <Categories onChangeCategory={onChangeCategory} value={categoryId}/>
         <Sort/>
       </div>
       <h2 className="content__title">Все пиццы</h2>

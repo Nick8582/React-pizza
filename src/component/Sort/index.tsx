@@ -1,6 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {selectSort, selectSortByTo, setSortByTo, setSortType, SortPropertyEnum} from "../../redux/slices/filterSlice";
+import {
+  selectSortByTo,
+  setSortByTo,
+  setSortType,
+  Sort,
+  SortPropertyEnum
+} from "../../redux/slices/filterSlice";
 
 type SortItem = {
   name: string;
@@ -11,15 +17,18 @@ type PopupClick = MouseEvent & {
   path: Node[]
 };
 
+type SortPopupProp = {
+  sort: Sort
+}
+
 export const sortList: SortItem[] = [
   {name: 'популярности', sortProperty: SortPropertyEnum.RATING},
   {name: 'цене', sortProperty: SortPropertyEnum.PRICE},
   {name: 'алфавиту', sortProperty: SortPropertyEnum.TITLE}
 ]
 
-const SortPopup: React.FC = () => {
+const SortPopup: React.FC<SortPopupProp> = React.memo(({sort,}) => {
   const dispatch = useDispatch()
-  const sort = useSelector(selectSort)
   const sortByTo = useSelector(selectSortByTo)
   const sortRef = useRef<HTMLDivElement>(null);
 
@@ -37,7 +46,7 @@ const SortPopup: React.FC = () => {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const _event = e as PopupClick;
-      if(sortRef.current && !_event.composedPath().includes(sortRef.current)) {
+      if (sortRef.current && !_event.composedPath().includes(sortRef.current)) {
         setOpen(false)
       }
     }
@@ -75,6 +84,6 @@ const SortPopup: React.FC = () => {
         </div>)}
     </div>
   );
-}
+})
 
 export default SortPopup;

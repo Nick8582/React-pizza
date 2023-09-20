@@ -29,12 +29,20 @@ const cartSlice = createSlice({
       if (findItem) {
         findItem.count--
       }
+      state.totalPrice = calcTotalPrice(state.items )
     },
     removeItem(state, acton: PayloadAction<string>) {
+      state.totalPrice = calcTotalPrice(state.items)
       state.items = state.items.filter((obj) => obj.id !== acton.payload)
+      if(state.items.length === 0) {
+        state.items = []
+        state.totalPrice = calcTotalPrice(state.items )
+        state.totalPrice = 0
+      }
     },
     clearItems(state) {
       state.items = []
+      state.totalPrice = calcTotalPrice(state.items )
       state.totalPrice = 0
     }
   }

@@ -1,5 +1,7 @@
 # React Pizza Online Store
 
+The project has been completed, technologies such as React, Redux, axios, React-router-domain have been used in this project.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
